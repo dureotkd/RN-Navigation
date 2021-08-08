@@ -22,17 +22,18 @@ const Input = ({ value, handleText, handleSubmit }) => {
       autoCorrect={false}
       returnKeyType="done"
       width={width}
-      onChange={handleText}
+      onChangeText={handleText}
       onSubmitEditing={handleSubmit}
       value={value}
+      placeholder="Add +"
     />
   );
 };
 
-Input.propTypes = {
-  value: PropTypes.string.isRequired,
-  handleText: PropTypes.func.isRequired,
-  handleSubmit: PropTypes.func.isRequired,
-};
+// Input.propTypes = {
+//   value: PropTypes.string.isRequired,
+//   handleText: PropTypes.func.isRequired,
+//   handleSubmit: PropTypes.func.isRequired,
+// };
 
 export default Input;

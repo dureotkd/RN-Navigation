@@ -7,6 +7,8 @@ import MyButton from "./Components/MyButton";
 import styled, { ThemeProvider, css, attrs } from "styled-components/native";
 import { theme } from "./theme";
 import StyledInput from "./Components/Input";
+import Todo from "./Components/Todo";
+import List from "./Components/List";
 
 const Container = styled.View`
   display: flex;
@@ -16,8 +18,6 @@ const Container = styled.View`
   flex: 1;
   background-color: ${theme.background};
   padding: 0 20px;
-  align-items: "center";
-  justify-content: "center";
 `;
 
 const Title = styled.Text`
@@ -25,6 +25,7 @@ const Title = styled.Text`
   font-weight: 600;
   color: ${theme.text};
   width: 100%;
+  margin-top: 50px;
   text-align: center;
   /* padding: 0 20px; */
 `;
@@ -47,8 +48,7 @@ const Box = styled.View`
 const Card = styled.View`
   background: ${theme.whiteBackground};
   border-radius: 2px;
-  display: inline-block;
-  height: 300px;
+  flex: 1;
   margin: 1rem;
   position: relative;
   width: 100%;
@@ -57,19 +57,57 @@ const Card = styled.View`
 
 export default function App() {
   const [text, setText] = useState("");
+  const [todoList, setTodoList] = useState([
+    {
+      id: "1",
+      text: "React Native",
+      success: false,
+    },
+    {
+      id: "2",
+      text: "Javascript",
+      success: false,
+    },
+  ]);
 
-  const handleText = (e) => {
-    setText(e.target.value);
+  const handleText = (text) => {
+    setText(text);
   };
 
   const handleSubmit = (e) => {
+    if (text.length < 1) {
+      alert("Todo를 입력해주세요.");
+      return false;
+    }
+
+    const id = Date.now().toString();
+
+    const newTodo = {
+      id: id,
+      success: false,
+      text: text,
+    };
+
+    let clone = [...todoList];
+    clone.unshift(newTodo);
+    setTodoList(clone);
     setText("");
+  };
+
+  const handleDelete = (id) => {
+    const clone = [...todoList];
+    // 첫번쨰 방법.
+    const newList = clone.filter((val, idx) => {
+      return val.id !== id;
+    });
+
+    setTodoList(newList);
   };
 
   return (
     <Container theme={theme}>
       <Box>
-        <Title>TODO LIST</Title>
+        <Title>Todo List</Title>
         <StyledInput
           handleText={handleText}
           handleSubmit={handleSubmit}
@@ -78,7 +116,7 @@ export default function App() {
       </Box>
       <StatusBar style="auto" />
       <Card>
-        <p>{text}</p>
+        <List todoList={todoList} handleDelete={handleDelete} />
       </Card>
       {/* <Box style={{ backgroundColor: "red", height: 100 }} />
       <Box style={{ backgroundColor: "green", flex: 1 }} />
