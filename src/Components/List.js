@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import {
   StyleSheet,
   Text,
@@ -6,24 +6,24 @@ import {
   Button,
   Image,
   TouchableOpacity,
+  ScrollView,
 } from "react-native";
 import styled from "styled-components/native";
 import Icon from "react-native-vector-icons/AntDesign";
 import IconButton from "./Icon";
 import PropTypes from "prop-types";
 
-const Container = styled.View`
-  flex-direction: column;
-  align-items: center;
-  justify-content: flex-start;
+const Container = styled.ScrollView`
   padding: 5px;
   border-radius: 3px;
   font-size: 20px;
+  width: 100%;
 `;
 
-const StyledText = styled.Text`
+const ListBox = styled.View`
   display: flex;
-  justify-content: flex-start;
+  justify-content: space-between;
+  flex-direction: row;
   align-items: center;
   font-size: 16px;
   width: 100%;
@@ -32,7 +32,21 @@ const StyledText = styled.Text`
   border-bottom-width: 1px;
 `;
 
+const ListContainer = styled.View`
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  padding: 5px;
+  border-radius: 3px;
+  font-size: 20px;
+  width: 100%;
+`;
+
 const List = ({ todoList, handleDelete }) => {
+  useEffect(() => {
+    console.log("hello MyList");
+  }, []);
+
   const handlePress = (event) => {
     alert("zz");
   };
@@ -42,15 +56,21 @@ const List = ({ todoList, handleDelete }) => {
       {todoList &&
         todoList.map((val, idx) => {
           return (
-            <StyledText key={val.idx}>
-              <Icon name="check"></Icon>
-              {val.text}
-              <Button
-                title="삭제"
-                color="red"
-                onPress={handleDelete.bind(this, val.id)}
-              ></Button>
-            </StyledText>
+            <ListBox key={idx}>
+              <View>
+                <Icon name="check"></Icon>
+              </View>
+              <Text>{val.text}</Text>
+              <View style={{ flexDirection: "row" }}>
+                <View>
+                  <Button
+                    title="삭제"
+                    color="red"
+                    onPress={handleDelete.bind(this, val.id)}
+                  ></Button>
+                </View>
+              </View>
+            </ListBox>
           );
         })}
     </Container>

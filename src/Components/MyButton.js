@@ -1,6 +1,5 @@
 import React from "react";
 import { TouchableOpacity, View, Text, TextInput } from "react-native";
-import PropTypes from "prop-types";
 
 const MyButton = (props) => {
   return (
@@ -16,14 +15,6 @@ const MyButton = (props) => {
       </View>
     </TouchableOpacity>
   );
-};
-
-MyButton.defaultProps = {
-  title: "default",
-};
-
-MyButton.PropTypes = {
-  title: PropTypes.string.isRequired,
 };
 
 export default MyButton;

@@ -1,14 +1,12 @@
 import { StatusBar } from "expo-status-bar";
-import React, { useState } from "react";
-import { Dimensions } from "react-native";
-import { StyleSheet, Text, View, Button } from "react-native";
-import MyButton from "./Components/MyButton";
-//import Box from "./Components/Box";
+import React, { useState, useEffect, useRef, createContext } from "react";
+import { Dimensions, StyleSheet, Text, View, Button } from "react-native";
+import AppLoading from "expo-app-loading";
 import styled, { ThemeProvider, css, attrs } from "styled-components/native";
 import { theme } from "./theme";
-import StyledInput from "./Components/Input";
-import Todo from "./Components/Todo";
-import List from "./Components/List";
+
+// 무조건 Navigation Continer 밑에는 Stack또는 자식 컴포넌트가 존재해야한다 Stack컴포넌트아래에는 Screen컴포넌트가 다수 들어갈수있다.
+import Navigation from "./Navigations";
 
 const Container = styled.View`
   display: flex;
@@ -56,72 +54,27 @@ const Card = styled.View`
 `;
 
 export default function App() {
-  const [text, setText] = useState("");
-  const [todoList, setTodoList] = useState([
-    {
-      id: "1",
-      text: "React Native",
-      success: false,
-    },
-    {
-      id: "2",
-      text: "Javascript",
-      success: false,
-    },
-  ]);
+  const [loading, setLoading] = useState(true);
 
-  const handleText = (text) => {
-    setText(text);
+  useEffect(() => {}, []);
+
+  const getData = () => {
+    return "zzz";
   };
 
-  const handleSubmit = (e) => {
-    if (text.length < 1) {
-      alert("Todo를 입력해주세요.");
-      return false;
-    }
-
-    const id = Date.now().toString();
-
-    const newTodo = {
-      id: id,
-      success: false,
-      text: text,
-    };
-
-    let clone = [...todoList];
-    clone.unshift(newTodo);
-    setTodoList(clone);
-    setText("");
-  };
-
-  const handleDelete = (id) => {
-    const clone = [...todoList];
-    // 첫번쨰 방법.
-    const newList = clone.filter((val, idx) => {
-      return val.id !== id;
-    });
-
-    setTodoList(newList);
-  };
-
-  return (
-    <Container theme={theme}>
-      <Box>
-        <Title>Todo List</Title>
-        <StyledInput
-          handleText={handleText}
-          handleSubmit={handleSubmit}
-          value={text}
-        />
-      </Box>
-      <StatusBar style="auto" />
-      <Card>
-        <List todoList={todoList} handleDelete={handleDelete} />
-      </Card>
-      {/* <Box style={{ backgroundColor: "red", height: 100 }} />
-      <Box style={{ backgroundColor: "green", flex: 1 }} />
-      <Box style={{ backgroundColor: "orange", height: 100 }} /> */}
-    </Container>
+  return !loading ? (
+    <Navigation />
+  ) : (
+    <AppLoading
+      startAsync={getData}
+      onFinish={() => {
+        console.log("loading End");
+        setLoading(false);
+      }}
+      onError={() => {
+        console.log("error");
+      }}
+    />
   );
 }
 

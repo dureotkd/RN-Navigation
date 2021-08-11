@@ -14,17 +14,16 @@ const StyledInput = styled.TextInput`
   border: none;
 `;
 
-const Input = ({ value, handleText, handleSubmit }) => {
+const Input = ({ value, handleText, handleSubmit, addInput }) => {
   const width = useWindowDimensions().width;
   return (
     <StyledInput
-      autoCapitalize="none"
-      autoCorrect={false}
-      returnKeyType="done"
+      returnKeyType="next"
       width={width}
       onChangeText={handleText}
       onSubmitEditing={handleSubmit}
       value={value}
+      ref={addInput}
       placeholder="Add +"
     />
   );
